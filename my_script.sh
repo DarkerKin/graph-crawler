@@ -18,31 +18,31 @@ cmake ..
 
 sudo make install
 
-pwd
+cd ../../
 
-# make
+make
 
-# echo "Start Node,Depth,Nodes Visited,Time (s)" > results.csv
+echo "Start Node,Depth,Nodes Visited,Time (s)" > results.csv
 
-# # Define tests
-# tests=(
-#   "Tom Hanks 1"
-#   "Tom Hanks 2"
-#   "Tom Hanks 3"
-#   "Leonardo DiCaprio 2"
-#   "Forrest Gump 2"
-# )
+# Define tests
+tests=(
+  "Tom Hanks 1"
+  "Tom Hanks 2"
+  "Tom Hanks 3"
+  "Leonardo DiCaprio 2"
+  "Forrest Gump 2"
+)
 
-# for test in "${tests[@]}"; do
-#     node=$(echo $test | awk '{print $1 " " $2}')
-#     depth=$(echo $test | awk '{print $3}')
+for test in "${tests[@]}"; do
+    node=$(echo $test | awk '{print $1 " " $2}')
+    depth=$(echo $test | awk '{print $3}')
 
-#     echo "Running: $node depth $depth"
+    echo "Running: $node depth $depth"
 
-#     output=$(./graph_crawler "$node" $depth 2>&1)
+    output=$(./graph_crawler "$node" $depth 2>&1)
 
-#     time=$(echo "$output" | grep "Execution time" | awk '{print $3}')
-#     visited=$(echo "$output" | grep "Total nodes visited" | awk '{print $4}')
+    time=$(echo "$output" | grep "Execution time" | awk '{print $3}')
+    visited=$(echo "$output" | grep "Total nodes visited" | awk '{print $4}')
 
-#     echo "\"$node\",$depth,$visited,$time" >> results.csv
-# done
+    echo "\"$node\",$depth,$visited,$time" >> results.csv
+done
