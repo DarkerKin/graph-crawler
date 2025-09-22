@@ -4,35 +4,54 @@
 #SBATCH --time=20:00:00
 #SBATCH --output=slurm-%j.out
 #SBATCH --error=slurm-%j.err
-#SBATCH --mem=20G
+#SBATCH --mem=8G
 
-module load gcc curl rapidjson   # load modules if required
+# Load necessary modules
+module load gcc curl cmake git
 
+# Set up local install path for libraries
+export INSTALL_DIR=$HOME/rapidjson_install
+mkdir -p $INSTALL_DIR
 
+# Clone and build RapidJSON locally
+git clone https://github.com/Tencent/rapidjson.git rapidjson_src
+cd rapidjson_src
+mkdir build && cd build
+cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR ..
+make -j$(nproc)
+make install
+cd ../../
 
-make
+# Make sure your project uses the local RapidJSON
+export CMAKE_PREFIX_PATH=$INSTALL_DIR:$CMAKE_PREFIX_PATH
 
+# Build your graph_crawler executable
+make -j$(nproc)
+
+# Prepare results file
 echo "Start Node,Depth,Nodes Visited,Time (s)" > results.csv
 
-# Define tests
+# Define tests using '|' as a delimiter for multi-word nodes
 tests=(
-  "Tom Hanks 1"
-  "Tom Hanks 2"
-  "Tom Hanks 3"
-  "Leonardo DiCaprio 2"
-  "Forrest Gump 2"
+  "Tom Hanks|1"
+  "Tom Hanks|2"
+  "Tom Hanks|3"
+  "Leonardo DiCaprio|2"
+  "Forrest Gump|2"
 )
 
+# Run tests
 for test in "${tests[@]}"; do
-    node=$(echo $test | awk '{print $1 " " $2}')
-    depth=$(echo $test | awk '{print $3}')
-
+    IFS="|" read -r node depth <<< "$test"
     echo "Running: $node depth $depth"
 
     output=$(./graph_crawler "$node" $depth 2>&1)
 
+    # Extract results (adjust if your program prints differently)
     time=$(echo "$output" | grep "Execution time" | awk '{print $3}')
     visited=$(echo "$output" | grep "Total nodes visited" | awk '{print $4}')
 
     echo "\"$node\",$depth,$visited,$time" >> results.csv
 done
+
+echo "All tests completed. Results saved in results.csv"
