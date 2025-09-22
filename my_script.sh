@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=graph_benchmark
 #SBATCH --output=benchmark_results.txt
-#SBATCH --ntasks=1
+#SBATCH --partition=Centaurus
 #SBATCH --time=02:00:00
 #SBATCH --mem=8G
 
