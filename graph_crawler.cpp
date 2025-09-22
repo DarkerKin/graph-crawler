@@ -10,8 +10,8 @@
 #include <curl/curl.h>
 
 // RapidJSON
-#include "./rapidjson/document.h"
-#include "./rapidjson/error/en.h"
+#include "rapidjson/document.h"
+#include "rapidjson/error/en.h"
 
 // Helper for libcurl: write callback
 static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
