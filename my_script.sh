@@ -8,29 +8,41 @@
 
 module load gcc curl rapidjson   # load modules if required
 
-make
+git clone https://github.com/Tencent/rapidjson.git
 
-echo "Start Node,Depth,Nodes Visited,Time (s)" > results.csv
+cd rapidjson
 
-# Define tests
-tests=(
-  "Tom Hanks 1"
-  "Tom Hanks 2"
-  "Tom Hanks 3"
-  "Leonardo DiCaprio 2"
-  "Forrest Gump 2"
-)
+mkdir build && cd build
 
-for test in "${tests[@]}"; do
-    node=$(echo $test | awk '{print $1 " " $2}')
-    depth=$(echo $test | awk '{print $3}')
+cmake ..
 
-    echo "Running: $node depth $depth"
+sudo make install
 
-    output=$(./graph_crawler "$node" $depth 2>&1)
+pwd
 
-    time=$(echo "$output" | grep "Execution time" | awk '{print $3}')
-    visited=$(echo "$output" | grep "Total nodes visited" | awk '{print $4}')
+# make
 
-    echo "\"$node\",$depth,$visited,$time" >> results.csv
-done
+# echo "Start Node,Depth,Nodes Visited,Time (s)" > results.csv
+
+# # Define tests
+# tests=(
+#   "Tom Hanks 1"
+#   "Tom Hanks 2"
+#   "Tom Hanks 3"
+#   "Leonardo DiCaprio 2"
+#   "Forrest Gump 2"
+# )
+
+# for test in "${tests[@]}"; do
+#     node=$(echo $test | awk '{print $1 " " $2}')
+#     depth=$(echo $test | awk '{print $3}')
+
+#     echo "Running: $node depth $depth"
+
+#     output=$(./graph_crawler "$node" $depth 2>&1)
+
+#     time=$(echo "$output" | grep "Execution time" | awk '{print $3}')
+#     visited=$(echo "$output" | grep "Total nodes visited" | awk '{print $4}')
+
+#     echo "\"$node\",$depth,$visited,$time" >> results.csv
+# done
