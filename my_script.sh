@@ -14,19 +14,11 @@ export INSTALL_DIR=$HOME/rapidjson_install
 mkdir -p $INSTALL_DIR
 
 # Clone and build RapidJSON locally
-git clone https://github.com/Tencent/rapidjson.git rapidjson_src
-cd rapidjson_src
-mkdir build && cd build
-cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR ..
-make -j$(nproc)
-make install
-cd ../../
+git clone https://github.com/Tencent/rapidjson.git 
+
 
 # Make sure your project uses the local RapidJSON
-export CMAKE_PREFIX_PATH=$INSTALL_DIR:$CMAKE_PREFIX_PATH
-
-# Build your graph_crawler executable
-make -j$(nproc)
+make
 
 # Prepare results file
 echo "Start Node,Depth,Nodes Visited,Time (s)" > results.csv
