@@ -6,12 +6,6 @@
 #SBATCH --error=slurm-%j.err
 #SBATCH --mem=8G
 
-# Load necessary modules
-module gcc
-
-
-# Make sure your project uses the local RapidJSON
-make
 
 # Prepare results file
 echo "Start Node,Depth,Nodes Visited,Time (s)" > results.csv
