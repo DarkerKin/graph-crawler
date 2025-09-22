@@ -7,14 +7,7 @@
 #SBATCH --mem=8G
 
 # Load necessary modules
-module load gcc curl cmake git
-
-# Set up local install path for libraries
-export INSTALL_DIR=$HOME/rapidjson_install
-mkdir -p $INSTALL_DIR
-
-# Clone and build RapidJSON locally
-git clone https://github.com/Tencent/rapidjson.git 
+module gcc
 
 
 # Make sure your project uses the local RapidJSON
