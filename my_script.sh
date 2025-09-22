@@ -1,11 +1,14 @@
 #!/bin/bash
-#SBATCH --job-name=graph_benchmark
-#SBATCH --output=benchmark_results.txt
+#SBATCH --job-name=particle_sim
 #SBATCH --partition=Centaurus
-#SBATCH --time=02:00:00
-#SBATCH --mem=8G
+#SBATCH --time=20:00:00
+#SBATCH --output=slurm-%j.out
+#SBATCH --error=slurm-%j.err
+#SBATCH --mem=20G
 
 module load gcc curl rapidjson   # load modules if required
+
+make
 
 echo "Start Node,Depth,Nodes Visited,Time (s)" > results.csv
 
